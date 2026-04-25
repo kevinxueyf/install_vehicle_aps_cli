@@ -67,7 +67,7 @@ def call_via_daemon(command, lang='zh', retry=True):
         
         # 2. 服务在线，发送指令，并给予充足的后端处理时间 (60s)
         payload = {"command": command, "lang": lang}
-        res = requests.post(DAEMON_URL, json=payload, timeout=60)
+        res = requests.post(DAEMON_URL, json=payload, timeout=130)
         if res.status_code == 200:
             return res.json()
     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
@@ -186,7 +186,7 @@ def aps_call(command, lang='zh', is_test=False, raw=False):
         test_command = "列出系统中的工厂" if is_test else command
         agent_payload = {"command": test_command, "lang": lang}
         
-        agent_res = requests.post(agent_url, json=agent_payload, headers=headers, timeout=60, verify=verify_ssl)
+        agent_res = requests.post(agent_url, json=agent_payload, headers=headers, timeout=120, verify=verify_ssl)
         agent_data = safe_json_decode(agent_res, "智能体接口")
         
         if agent_data.get('success'):
