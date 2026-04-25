@@ -16,7 +16,7 @@ if [ ! -f "$SOURCE_DIR/README.MD" ]; then
     TEMP_DIR=$(mktemp -d)
     git clone https://github.com/kevinxueyf/install_vehicle_aps_cli.git "$TEMP_DIR" --quiet
     cd "$TEMP_DIR"
-    ./install_vehicle_aps_cli.sh
+    bash ./install_vehicle_aps_cli.sh
     exit $?
 fi
 
