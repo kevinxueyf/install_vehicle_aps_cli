@@ -1,0 +1,6 @@
+{
+  "url": "http://localhost:3000",
+  "apiKey": "Need to be replaced by real API KEY",
+  "verify_ssl": false,
+  "language": "zh"
+}

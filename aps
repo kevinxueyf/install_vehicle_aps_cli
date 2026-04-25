@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Vehicle APS Skill Wrapper
+# 此脚本用于从任何地方调用 Vehicle APS Skill
+
+# 优先查找全局安装路径
+GLOBAL_PATH="$HOME/.openclaw/skills/vehicle_aps/aps_tool.py"
+LOCAL_PATH="$(dirname "$(readlink -f "$0")")/aps_tool.py"
+
+if [ -f "$GLOBAL_PATH" ]; then
+    SKILL_PATH="$GLOBAL_PATH"
+elif [ -f "$LOCAL_PATH" ]; then
+    SKILL_PATH="$LOCAL_PATH"
+else
+    # 尝试当前目录
+    SKILL_PATH="./aps_tool.py"
+fi
+
+if [ ! -f "$SKILL_PATH" ]; then
+    echo "❌ 错误：未找到 aps_tool.py。"
+    echo "请运行 install_to_openclaw.sh 进行安装。"
+    exit 1
+fi
+
+python3 "$SKILL_PATH" "$@"
