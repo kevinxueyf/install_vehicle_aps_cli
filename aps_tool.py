@@ -77,7 +77,7 @@ def call_via_daemon(command, lang='zh', retry=True):
             start_daemon()
             return call_via_daemon(command, lang, retry=False)
     except Exception:
-    return None
+        return None
 
 def stop_daemon():
     """停止常驻服务"""
