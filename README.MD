@@ -15,9 +15,9 @@ type: python
 在安装此插件后，您必需确保 `skills/vehicle_aps/config.json` 文件已正确配置以下项：
 
 - `url`: 系统的访问地址（例如 `http://localhost:3000`）。
-- `username`: 登录用户名（例如 `Admin`）。
-- `password`: 登录密码。
+- `apiKey`: 系统访问令牌 (API Key)。
 - `verify_ssl`: 是否验证 SSL 证书 (true/false)。如果系统使用自签名证书，请设置为 `false`。
+- `language`: 默认交互语言 (`zh` 或 `en`)。
 
 ## 安装步骤
 

@@ -15,9 +15,9 @@ This plugin enables Agents to interact with the **Vehicle APS (Advanced Producti
 After installing this plugin, ensure that the `skills/vehicle_aps/config.json` file is correctly configured with the following items:
 
 - `url`: System access address (e.g., `http://localhost:3000`).
-- `username`: Login username (e.g., `Admin`).
-- `password`: Login password.
+- `apiKey`: System Access Token (API Key).
 - `verify_ssl`: Whether to verify SSL certificates (true/false). Set to `false` if using self-signed certificates.
+- `language`: Default interaction language (`zh` or `en`).
 
 ## Installation Steps
 
