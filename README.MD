@@ -18,16 +18,30 @@ type: python
 - `verify_ssl`: 是否验证 SSL 证书 (true/false)。如果系统使用自签名证书，请设置为 `false`。
 
 ## 安装步骤
-
-### 方法 A：自动安装（推荐）
-
-直接在插件目录运行安装脚本：
-
-```bash
-chmod +x skills/vehicle_aps/install_vehicle_aps_cli.sh
-./skills/vehicle_aps/install_vehicle_aps_cli.sh
-```
-
++
++### 方法 A：GitHub 一键安装（最快）
++
++无需手动下载，直接在终端执行以下命令：
++
++**Linux / macOS:**
++```bash
++curl -fsSL https://raw.githubusercontent.com/kevinxueyf/install_vehicle_aps_cli/main/install_vehicle_aps_cli.sh | bash
++```
++
++**Windows (PowerShell):**
++```powershell
++iwr -useb https://raw.githubusercontent.com/kevinxueyf/install_vehicle_aps_cli/main/install_vehicle_aps_cli.ps1 | iex
++```
++
++### 方法 B：本地自动安装
++
++如果您已克隆仓库，请在插件目录运行：
++
++```bash
++chmod +x install_vehicle_aps_cli.sh
++./install_vehicle_aps_cli.sh
++```
++
 脚本将自动执行以下操作：
 
 1. 检测环境并同步文件。
@@ -61,7 +75,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
    ```
 
 2. **同步文件**：
-   将 `SKILL.md`、`aps_tool.py` 和 `config.json.example` 复制到上述目录中。
+   将 `README.MD`、`aps_tool.py` 和 `config.json.example` 复制到上述目录中。
 
 3. **配置连接信息**：
    将 `config.json.example` 重命名为 `config.json`，并填写您的系统访问信息。

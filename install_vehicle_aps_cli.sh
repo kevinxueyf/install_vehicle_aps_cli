@@ -5,6 +5,21 @@ SKILL_NAME="vehicle_aps"
 # 自动定位当前脚本所在的目录作为源目录
 SOURCE_DIR=$(cd "$(dirname "$0")" && pwd)
 
+# --- 远程安装支持 ---
+# 如果脚本在临时目录运行且没有 README.MD，则尝试从 GitHub 克隆
+if [ ! -f "$SOURCE_DIR/README.MD" ]; then
+    echo "🌐 检测到远程执行。正在从 GitHub 克隆完整仓库..."
+    if ! command -v git &> /dev/null; then
+        echo "❌ 错误：未找到 git，请先安装 git 或手动下载仓库。"
+        exit 1
+    fi
+    TEMP_DIR=$(mktemp -d)
+    git clone https://github.com/kevinxueyf/install_vehicle_aps_cli.git "$TEMP_DIR" --quiet
+    cd "$TEMP_DIR"
+    ./install_vehicle_aps_cli.sh
+    exit $?
+fi
+
 # 智能检测安装路径
 if [ -d "$HOME/.openclaw" ]; then
     TARGET_BASE="$HOME/.openclaw/skills"
@@ -16,9 +31,9 @@ fi
 
 echo "🚀 开始安装 Vehicle APS ($INSTALL_TYPE) ..."
 
-# 1. 检查源文件（脚本同级目录下应该有 SKILL.md 等文件）
-if [ ! -f "$SOURCE_DIR/SKILL.md" ]; then
-    echo "❌ 错误：在 $SOURCE_DIR 中未找到插件的核心元数据文件 (SKILL.md)"
+# 1. 检查源文件
+if [ ! -f "$SOURCE_DIR/README.MD" ]; then
+    echo "❌ 错误：在 $SOURCE_DIR 中未找到插件的核心元数据文件 (README.MD)"
     exit 1
 fi
 
@@ -27,7 +42,7 @@ mkdir -p "$TARGET_BASE/$SKILL_NAME"
 
 # 3. 复制文件 (只复制必要的文件，排除脚本自身)
 echo "📁 正在同步文件到 $TARGET_BASE/$SKILL_NAME..."
-cp "$SOURCE_DIR/SKILL.md" "$TARGET_BASE/$SKILL_NAME/"
+cp "$SOURCE_DIR/README.MD" "$TARGET_BASE/$SKILL_NAME/"
 cp "$SOURCE_DIR/aps_tool.py" "$TARGET_BASE/$SKILL_NAME/"
 cp "$SOURCE_DIR/aps_daemon.py" "$TARGET_BASE/$SKILL_NAME/"
 cp "$SOURCE_DIR/aps" "$TARGET_BASE/$SKILL_NAME/"

@@ -3,6 +3,20 @@
 $SkillName = "vehicle_aps"
 $SourceDir = $PSScriptRoot
 
+# --- 远程安装支持 ---
+if (!(Test-Path (Join-Path $SourceDir "README.MD"))) {
+    Write-Host "🌐 检测到远程执行。正在从 GitHub 克隆完整仓库..." -ForegroundColor Cyan
+    if (!(Get-Command git -ErrorAction SilentlyContinue)) {
+        Write-Host "❌ 错误：未找到 git，请先安装 git 或手动下载仓库。" -ForegroundColor Red
+        exit
+    }
+    $TempDir = Join-Path $env:TEMP ([Guid]::NewGuid().ToString())
+    git clone https://github.com/kevinxueyf/install_vehicle_aps_cli.git $TempDir --quiet
+    Set-Location $TempDir
+    .\install_vehicle_aps_cli.ps1
+    return
+}
+
 # 1. 智能检测安装路径
 $OpenClawPath = Join-Path $HOME ".openclaw"
 if (Test-Path $OpenClawPath) {
@@ -16,8 +30,8 @@ if (Test-Path $OpenClawPath) {
 Write-Host "🚀 开始安装 Vehicle APS ($InstallType) ..." -ForegroundColor Cyan
 
 # 2. 检查源文件
-if (!(Test-Path (Join-Path $SourceDir "SKILL.md"))) {
-    Write-Host "❌ 错误：在 $SourceDir 中未找到插件的核心元数据文件 (SKILL.md)" -ForegroundColor Red
+if (!(Test-Path (Join-Path $SourceDir "README.MD"))) {
+    Write-Host "❌ 错误：在 $SourceDir 中未找到插件的核心元数据文件 (README.MD)" -ForegroundColor Red
     exit
 }
 
@@ -29,7 +43,7 @@ if (!(Test-Path $TargetDir)) {
 
 # 4. 同步文件
 Write-Host "📁 正在同步文件到 $TargetDir..."
-$FilesToCopy = @("SKILL.md", "aps_tool.py", "aps_daemon.py", "aps", "aps.bat", "config.json.example")
+$FilesToCopy = @("README.MD", "aps_tool.py", "aps_daemon.py", "aps", "aps.bat", "config.json.example")
 foreach ($File in $FilesToCopy) {
     Copy-Item (Join-Path $SourceDir $File) -Destination $TargetDir -Force
 }
