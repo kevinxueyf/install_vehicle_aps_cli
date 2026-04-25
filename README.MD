@@ -20,30 +20,29 @@ type: python
 - `verify_ssl`: 是否验证 SSL 证书 (true/false)。如果系统使用自签名证书，请设置为 `false`。
 
 ## 安装步骤
-+
-+### 方法 A：GitHub 一键安装（最快）
-+
-+无需手动下载，直接在终端执行以下命令：
-+
-+**Linux / macOS:**
-+```bash
-+curl -fsSL https://raw.githubusercontent.com/kevinxueyf/install_vehicle_aps_cli/main/install_vehicle_aps_cli.sh | bash
-+```
-+
-+**Windows (PowerShell):**
-+```powershell
-+iwr -useb https://raw.githubusercontent.com/kevinxueyf/install_vehicle_aps_cli/main/install_vehicle_aps_cli.ps1 | iex
-+```
-+
-+### 方法 B：本地自动安装
-+
-+如果您已克隆仓库，请在插件目录运行：
-+
-+```bash
-+chmod +x install_vehicle_aps_cli.sh
-+./install_vehicle_aps_cli.sh
-+```
-+
+
+### 方法 A：GitHub 一键安装（最快）
+
+无需手动下载，直接在终端执行以下命令：
+
+**Linux / macOS:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/kevinxueyf/install_vehicle_aps_cli/main/install_vehicle_aps_cli.sh | bash
+```
+
+**Windows (PowerShell):**
+```powershell
+iwr -useb https://raw.githubusercontent.com/kevinxueyf/install_vehicle_aps_cli/main/install_vehicle_aps_cli.ps1 | iex
+```
+
+### 方法 B：本地自动安装
+
+如果您已克隆仓库，请在插件目录运行：
+
+```bash
+chmod +x install_vehicle_aps_cli.sh
+./install_vehicle_aps_cli.sh
+```
 脚本将自动执行以下操作：
 
 1. 检测环境并同步文件。
