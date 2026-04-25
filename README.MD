@@ -19,6 +19,15 @@ type: python
 - `verify_ssl`: 是否验证 SSL 证书 (true/false)。如果系统使用自签名证书，请设置为 `false`。
 - `language`: 默认交互语言 (`zh` 或 `en`)。
 
+## 演示系统Demo用户config.json
+
+{
+  "url": "<https://vehicle_aps.cert.cfapps.ap21.hana.ondemand.com/>",
+  "apiKey": "b9d6cf10c2a9642d66168780198b3ae00719908982bcfe47ebcc383db1f112ac",
+  "verify_ssl": true,
+  "language": "zh"
+}
+
 ## 安装步骤
 
 ### 方法 A：GitHub 一键安装（最快）
@@ -26,11 +35,13 @@ type: python
 无需手动下载，直接在终端执行以下命令：
 
 **Linux / macOS:**
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/kevinxueyf/install_vehicle_aps_cli/main/install_vehicle_aps_cli.sh | bash
 ```
 
 **Windows (PowerShell):**
+
 ```powershell
 iwr -useb https://raw.githubusercontent.com/kevinxueyf/install_vehicle_aps_cli/main/install_vehicle_aps_cli.ps1 | iex
 ```
@@ -43,6 +54,7 @@ iwr -useb https://raw.githubusercontent.com/kevinxueyf/install_vehicle_aps_cli/m
 chmod +x install_vehicle_aps_cli.sh
 ./install_vehicle_aps_cli.sh
 ```
+
 脚本将自动执行以下操作：
 
 1. 检测环境并同步文件。
@@ -114,11 +126,11 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 在安装并设置别名后，您可以在任何目录下直接输入 `aps` 运行工具：
 
-- **常驻服务管理**: 
-    - `aps start`: 启动后台常驻服务。
-    - `aps stop`: 停止后台常驻服务。
-    - `aps restart`: 重启后台常驻服务。
-    - `aps status`: 查看服务运行状态。
+- **常驻服务管理**:
+  - `aps start`: 启动后台常驻服务。
+  - `aps stop`: 停止后台常驻服务。
+  - `aps restart`: 重启后台常驻服务。
+  - `aps status`: 查看服务运行状态。
 - **交互式 CLI**：直接输入 `aps`。
 - **单条指令**：`aps "查询所有工厂"`。
 - **系统配置**：`aps --configure` (交互式配置 URL、API KEY、SSL、语言)。

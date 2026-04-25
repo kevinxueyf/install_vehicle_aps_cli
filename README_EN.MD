@@ -19,6 +19,15 @@ After installing this plugin, ensure that the `skills/vehicle_aps/config.json` f
 - `verify_ssl`: Whether to verify SSL certificates (true/false). Set to `false` if using self-signed certificates.
 - `language`: Default interaction language (`zh` or `en`).
 
+## Demo System - Demo User config.json
+
+{
+  "url": "<https://vehicle_aps.cert.cfapps.ap21.hana.ondemand.com/>",
+  "apiKey": "b9d6cf10c2a9642d66168780198b3ae00719908982bcfe47ebcc383db1f112ac",
+  "verify_ssl": true,
+  "language": "zh"
+}
+
 ## Installation Steps
 
 ### Method A: GitHub One-Click Install (Fastest)
@@ -26,11 +35,13 @@ After installing this plugin, ensure that the `skills/vehicle_aps/config.json` f
 No manual download required, execute the following command directly in the terminal:
 
 **Linux / macOS:**
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/kevinxueyf/install_vehicle_aps_cli/main/install_vehicle_aps_cli.sh | bash
 ```
 
 **Windows (PowerShell):**
+
 ```powershell
 iwr -useb https://raw.githubusercontent.com/kevinxueyf/install_vehicle_aps_cli/main/install_vehicle_aps_cli.ps1 | iex
 ```
@@ -115,11 +126,11 @@ To avoid latency from starting the Python interpreter and loading models for eac
 
 After installation and setting up the alias, you can run the tool directly from any directory:
 
-- **Daemon Management**: 
-    - `aps start`: Start the background daemon service.
-    - `aps stop`: Stop the background daemon service.
-    - `aps restart`: Restart the background daemon service.
-    - `aps status`: Check service running status.
+- **Daemon Management**:
+  - `aps start`: Start the background daemon service.
+  - `aps stop`: Stop the background daemon service.
+  - `aps restart`: Restart the background daemon service.
+  - `aps status`: Check service running status.
 - **Interactive CLI**: Enter `aps`.
 - **Single Instruction**: `aps "Query all factories"`.
 - **System Configuration**: `aps --configure` (interactive config for URL, API KEY, SSL, Language).
