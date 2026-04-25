@@ -21,12 +21,10 @@ type: python
 
 ## 演示系统Demo用户config.json
 
-{
-  "url": "<https://vehicle_aps.cert.cfapps.ap21.hana.ondemand.com/>",
-  "apiKey": "b9d6cf10c2a9642d66168780198b3ae00719908982bcfe47ebcc383db1f112ac",
-  "verify_ssl": true,
-  "language": "zh"
-}
+- `url`: <https://vehicle_aps.cert.cfapps.ap21.hana.ondemand.com>
+- `apiKey`: b9d6cf10c2a9642d66168780198b3ae00719908982bcfe47ebcc383db1f112ac
+- `verify_ssl`: true,
+- `language`: zh
 
 ## 安装步骤
 
