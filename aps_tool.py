@@ -216,6 +216,7 @@ UI_STRINGS = {
         'help_url': "更新 URL 地址: 输入 '/set-url <your_url>'",
         'help_config': "交互式配置: 输入 '/configure'",
         'help_test': "测试连接并启动服务: 输入 '/testrun'",
+        'help_timeout': "更新超时时间: 输入 '/set-timeout <seconds>'",
         'help_exit': "退出命令: /exit, /quit",
         'lang_switched': "✅ 语言已切换为: ",
         'key_updated': "✅ API KEY 已更新并保存。",
@@ -223,6 +224,7 @@ UI_STRINGS = {
         'config_start': "⚙️  开始进行系统配置...",
         'config_done': "✅ 配置已保存。",
         'test_start': "🧪 正在启动连接测试与服务初始化...",
+        'timeout_updated': "✅ 超时时间已更新为 {timeout}s，正在重启服务...",
         'lang_unsupported': "❌ 不支持的语言，请使用 'zh' 或 'en'",
         'exit_msg': "👋 再见！",
         'error_msg': "❌ 运行出错: "
@@ -241,6 +243,7 @@ UI_STRINGS = {
         'help_url': "Update URL Address: Type '/set-url <your_url>'",
         'help_config': "Interactive Config: Type '/configure'",
         'help_test': "Test Connection & Start Service: Type '/testrun'",
+        'help_timeout': "Update Timeout: Type '/set-timeout <seconds>'",
         'help_exit': "Exit: /exit, /quit",
         'lang_switched': "✅ Language switched to: ",
         'key_updated': "✅ API KEY updated and saved.",
@@ -248,6 +251,7 @@ UI_STRINGS = {
         'config_start': "⚙️  Starting system configuration...",
         'config_done': "✅ Configuration saved.",
         'test_start': "🧪 Starting connection test and service initialization...",
+        'timeout_updated': "✅ Timeout updated to {timeout}s, restarting service...",
         'lang_unsupported': "❌ Unsupported language, please use 'zh' or 'en'",
         'exit_msg': "👋 Goodbye!",
         'error_msg': "❌ Error: "
@@ -294,6 +298,7 @@ def interactive_mode(lang='zh'):
                 print(f"  - {s['help_url']}")
                 print(f"  - {s['help_config']}")
                 print(f"  - {s['help_test']}")
+                print(f"  - {s['help_timeout']}")
                 print(f"  - {s['help_exit']}\n")
                 continue
 
@@ -348,6 +353,24 @@ def interactive_mode(lang='zh'):
                     print(f"❌ Error: {e}")
                 continue
 
+            if user_input.lower().startswith('/set-timeout '):
+                try:
+                    new_timeout = int(user_input.split(' ', 1)[1].strip())
+                    with open(CONFIG_PATH, 'r+', encoding='utf-8') as f:
+                        cfg = json.load(f)
+                        cfg['timeout'] = new_timeout
+                        f.seek(0)
+                        json.dump(cfg, f, indent=2, ensure_ascii=False)
+                        f.truncate()
+                    print(s['timeout_updated'].format(timeout=new_timeout))
+                    # 重启服务
+                    stop_daemon()
+                    time.sleep(1)
+                    start_daemon()
+                except Exception as e:
+                    print(f"❌ Error: {e}")
+                continue
+
             if user_input.lower() == '/configure':
                 configure_mode(lang)
                 continue
@@ -387,6 +410,7 @@ def configure_mode(lang='zh'):
         cfg['url'] = get_input("Backend URL", 'url', 'http://localhost:3000')
         cfg['apiKey'] = get_input("API KEY", 'apiKey', '')
         cfg['language'] = get_input("Default Language (zh/en)", 'language', 'zh')
+        cfg['timeout'] = int(get_input("Timeout (seconds)", 'timeout', '60'))
         
         ssl_input = input(f"Verify SSL (y/n) [{'y' if cfg.get('verify_ssl', True) else 'n'}]: ").lower().strip()
         if ssl_input:
@@ -421,6 +445,7 @@ if __name__ == "__main__":
     parser.add_argument("--status", action="store_true", help="检查常驻服务运行状态")
     parser.add_argument("--set-key", help="更新配置文件中的 API KEY")
     parser.add_argument("--set-url", help="更新配置文件中的后端 URL 地址")
+    parser.add_argument("--set-timeout", type=int, help="更新配置文件中的超时时间 (秒)")
     parser.add_argument("--configure", action="store_true", help="交互式配置系统参数")
     parser.add_argument("--testrun", action="store_true", help="测试连接并自动初始化常驻服务")
 
@@ -474,6 +499,22 @@ if __name__ == "__main__":
                 json.dump(cfg, f, indent=2, ensure_ascii=False)
                 f.truncate()
             print("✅ URL 地址已成功更新。")
+        except Exception as e:
+            print(f"❌ Error: {e}")
+        sys.exit(0)
+
+    if args.set_timeout:
+        try:
+            with open(CONFIG_PATH, 'r+', encoding='utf-8') as f:
+                cfg = json.load(f)
+                cfg['timeout'] = args.set_timeout
+                f.seek(0)
+                json.dump(cfg, f, indent=2, ensure_ascii=False)
+                f.truncate()
+            print(f"✅ 超时时间已成功更新为 {args.set_timeout}s。正在重启服务...")
+            stop_daemon()
+            time.sleep(1)
+            start_daemon()
         except Exception as e:
             print(f"❌ Error: {e}")
         sys.exit(0)

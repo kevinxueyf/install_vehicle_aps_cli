@@ -80,14 +80,16 @@ class APSDaemon:
         payload = {"command": command, "lang": lang}
 
         try:
-            res = self.session.post(agent_url, json=payload, headers=headers, timeout=120, verify=self.verify_ssl)
+            timeout = self.config.get('timeout', 120)
+            res = self.session.post(agent_url, json=payload, headers=headers, timeout=timeout, verify=self.verify_ssl)
             
             # 如果使用 Token 且过期，尝试重新登录一次
             if res.status_code == 401 and not api_key:
                 print("⚠️ Token 已过期，尝试重新登录...")
                 if self.login():
                     headers["Authorization"] = f"Bearer {self.token}"
-                    res = self.session.post(agent_url, json=payload, headers=headers, timeout=120, verify=self.verify_ssl)
+                    timeout = self.config.get('timeout', 120)
+                    res = self.session.post(agent_url, json=payload, headers=headers, timeout=timeout, verify=self.verify_ssl)
                 else:
                     return {"success": False, "message": "Token 过期且重新登录失败"}
             

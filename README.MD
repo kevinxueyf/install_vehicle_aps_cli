@@ -18,6 +18,7 @@ type: python
 - `apiKey`: 系统访问令牌 (API Key)。
 - `verify_ssl`: 是否验证 SSL 证书 (true/false)。如果系统使用自签名证书，请设置为 `false`。
 - `language`: 默认交互语言 (`zh` 或 `en`)。
+- `timeout`: 接口调用超时时间（秒）。
 
 ## 演示系统Demo用户config.json
 
@@ -131,13 +132,15 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
   - `aps status`: 查看服务运行状态。
 - **交互式 CLI**：直接输入 `aps`。
 - **单条指令**：`aps "查询所有工厂"`。
-- **系统配置**：`aps --configure` (交互式配置 URL、API KEY、SSL、语言)。
+- **系统配置**：`aps --configure` (交互式配置 URL、API KEY、SSL、语言、超时)。
+- **超时设置**：`aps --set-timeout 120` (设置超时时间为 120 秒并自动重启服务)。
 - **连接测试**：`aps --testrun` (测试连接成功后会自动初始化常驻服务)。
 - **查看帮助**：`aps --help`。
 
 在交互模式下，您也可以使用内部指令：
 
 - `/configure`：进入配置模式。
+- `/set-timeout <秒>`：设置超时时间并自动重启。
 - `/testrun`：运行测试。
 - `/set-key <key>`：更新 API KEY。
 - `/set-url <url>`：更新后端地址。

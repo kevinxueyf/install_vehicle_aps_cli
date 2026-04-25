@@ -18,6 +18,7 @@ After installing this plugin, ensure that the `skills/vehicle_aps/config.json` f
 - `apiKey`: System Access Token (API Key).
 - `verify_ssl`: Whether to verify SSL certificates (true/false). Set to `false` if using self-signed certificates.
 - `language`: Default interaction language (`zh` or `en`).
+- `timeout`: API call timeout in seconds.
 
 ## Demo System - Demo User config.json
 
@@ -131,13 +132,15 @@ After installation and setting up the alias, you can run the tool directly from 
   - `aps status`: Check service running status.
 - **Interactive CLI**: Enter `aps`.
 - **Single Instruction**: `aps "Query all factories"`.
-- **System Configuration**: `aps --configure` (interactive config for URL, API KEY, SSL, Language).
+- **System Configuration**: `aps --configure` (interactive config for URL, API KEY, SSL, Language, Timeout).
+- **Timeout Setting**: `aps --set-timeout 120` (set timeout to 120s and restart service automatically).
 - **Connection Test**: `aps --testrun` (automatically starts the daemon service after a successful test).
 - **Help**: `aps --help`.
 
 In interactive mode, you can also use internal commands:
 
 - `/configure`: Enter configuration mode.
+- `/set-timeout <seconds>`: Set timeout and restart automatically.
 - `/testrun`: Run connection test.
 - `/set-key <key>`: Update API KEY.
 - `/set-url <url>`: Update backend URL.
