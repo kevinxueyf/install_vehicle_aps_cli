@@ -6,6 +6,8 @@ type: python
 
 # Vehicle APS Skill
 
+[English](README_EN.MD) | 中文版
+
 此插件使 Agent 能够与 **Vehicle APS (整车高级生产排序系统 V1.3.9)** 进行交互。Agent 可以通过此插件执行排序优化、查询工厂状态、调整生产计划、分析生产线时间轴等指令。
 
 ## 配置要求
