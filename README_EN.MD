@@ -115,6 +115,11 @@ To avoid latency from starting the Python interpreter and loading models for eac
 
 After installation and setting up the alias, you can run the tool directly from any directory:
 
+- **Daemon Management**: 
+    - `aps start`: Start the background daemon service.
+    - `aps stop`: Stop the background daemon service.
+    - `aps restart`: Restart the background daemon service.
+    - `aps status`: Check service running status.
 - **Interactive CLI**: Enter `aps`.
 - **Single Instruction**: `aps "Query all factories"`.
 - **System Configuration**: `aps --configure` (interactive config for URL, API KEY, SSL, Language).

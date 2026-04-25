@@ -114,6 +114,11 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 在安装并设置别名后，您可以在任何目录下直接输入 `aps` 运行工具：
 
+- **常驻服务管理**: 
+    - `aps start`: 启动后台常驻服务。
+    - `aps stop`: 停止后台常驻服务。
+    - `aps restart`: 重启后台常驻服务。
+    - `aps status`: 查看服务运行状态。
 - **交互式 CLI**：直接输入 `aps`。
 - **单条指令**：`aps "查询所有工厂"`。
 - **系统配置**：`aps --configure` (交互式配置 URL、API KEY、SSL、语言)。

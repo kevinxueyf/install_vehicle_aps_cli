@@ -121,6 +121,13 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.send_header('Content-type', 'application/json')
             self.end_headers()
             self.wfile.write(json.dumps(result).encode('utf-8'))
+        elif self.path == '/shutdown':
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b"Shutting down...")
+            print("\n👋 收到关机指令，正在停止服务...")
+            # 在另一个线程中执行，以免阻塞响应
+            Thread(target=self.server.shutdown).start()
         else:
             self.send_response(404)
             self.end_headers()

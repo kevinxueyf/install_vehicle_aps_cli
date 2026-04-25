@@ -77,8 +77,33 @@ def call_via_daemon(command, lang='zh', retry=True):
             start_daemon()
             return call_via_daemon(command, lang, retry=False)
     except Exception:
-        pass
     return None
+
+def stop_daemon():
+    """停止常驻服务"""
+    shutdown_url = DAEMON_URL.replace('/command', '/shutdown')
+    try:
+        requests.post(shutdown_url, timeout=2)
+        print("✅ Vehicle APS 常驻服务已停止。")
+        return True
+    except:
+        print("❌ 无法连接到服务，服务可能未启动。")
+        return False
+
+def check_status(silent=False):
+    """检查常驻服务运行状态"""
+    health_url = DAEMON_URL.replace('/command', '/health')
+    try:
+        res = requests.get(health_url, timeout=1)
+        if res.status_code == 200:
+            if not silent:
+                print("✅ Vehicle APS 常驻服务正在运行。")
+                print(f"📍 监听地址: {DAEMON_URL.replace('/command', '')}")
+            return True
+    except:
+        if not silent:
+            print("❌ Vehicle APS 常驻服务未启动。")
+    return False
 
 def format_output(data, raw=False):
     """格式化输出结果"""
@@ -401,17 +426,30 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if args.status:
-        health_url = DAEMON_URL.replace('/command', '/health')
-        try:
-            res = requests.get(health_url, timeout=1)
-            if res.status_code == 200:
-                print("✅ Vehicle APS 常驻服务正在运行。")
-                print(f"📍 监听地址: {DAEMON_URL.replace('/command', '')}")
+    # 处理特定的管理指令 (start, stop, restart, status)
+    if args.command in ['start', 'stop', 'restart', 'status']:
+        cmd = args.command
+        if cmd == 'status':
+            check_status()
+        elif cmd == 'start':
+            if check_status(silent=True):
+                print("ℹ️  服务已经在运行中。")
             else:
-                print(f"⚠️  服务响应异常 (Status: {res.status_code})")
-        except:
-            print("❌ Vehicle APS 常驻服务未启动。")
+                print("🕒 正在启动 Vehicle APS 常驻服务...")
+                start_daemon()
+                print("✅ 服务启动指令已发送。")
+        elif cmd == 'stop':
+            stop_daemon()
+        elif cmd == 'restart':
+            print("🔄 正在重启 Vehicle APS 常驻服务...")
+            stop_daemon()
+            time.sleep(1)
+            start_daemon()
+            print("✅ 服务重启指令已发送。")
+        sys.exit(0)
+
+    if args.status:
+        check_status()
         sys.exit(0)
 
     if args.set_key:
