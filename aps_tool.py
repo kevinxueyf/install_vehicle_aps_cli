@@ -382,7 +382,7 @@ def interactive_mode(lang='zh'):
                 continue
 
             if user_input.lower() == '/configure':
-                configure_mode(lang)
+                lang = configure_mode(lang)
                 continue
 
             if user_input.lower() == '/testrun':
@@ -443,10 +443,14 @@ def configure_mode(lang='zh'):
                 time.sleep(1)
                 start_daemon()
 
+        return cfg.get('language', lang)
+
     except KeyboardInterrupt:
         print("\n❌ 配置已取消。")
+        return lang
     except Exception as e:
         print(f"❌ Error: {e}")
+        return lang
 
 if __name__ == "__main__":
     # 加载配置以获取默认语言
