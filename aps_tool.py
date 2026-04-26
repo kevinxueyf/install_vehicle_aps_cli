@@ -223,6 +223,7 @@ UI_STRINGS = {
         'url_updated': "✅ URL 地址已更新并保存。",
         'config_start': "⚙️  开始进行系统配置...",
         'config_done': "✅ 配置已保存。",
+        'config_restart': "🔄 检测到配置变更，正在重启服务...",
         'test_start': "🧪 正在启动连接测试与服务初始化...",
         'timeout_updated': "✅ 超时时间已更新为 {timeout}s，正在重启服务...",
         'lang_unsupported': "❌ 不支持的语言，请使用 'zh' 或 'en'",
@@ -250,6 +251,7 @@ UI_STRINGS = {
         'url_updated': "✅ URL address updated and saved.",
         'config_start': "⚙️  Starting system configuration...",
         'config_done': "✅ Configuration saved.",
+        'config_restart': "🔄 Configuration changed, restarting service...",
         'test_start': "🧪 Starting connection test and service initialization...",
         'timeout_updated': "✅ Timeout updated to {timeout}s, restarting service...",
         'lang_unsupported': "❌ Unsupported language, please use 'zh' or 'en'",
@@ -332,9 +334,11 @@ def interactive_mode(lang='zh'):
                         f.truncate()
                     print(s['key_updated'])
                     # 重启守护进程以加载新配置
-                    health_url = DAEMON_URL.replace('/command', '/health')
-                    try: requests.get(health_url, timeout=0.1) # 触发可能存在的守护进程更新，或在此简单提示
-                    except: pass
+                    if check_status(silent=True):
+                        print(s.get('config_restart', "🔄 Restarting service..."))
+                        stop_daemon()
+                        time.sleep(1)
+                        start_daemon()
                 except Exception as e:
                     print(f"❌ Error: {e}")
                 continue
@@ -349,6 +353,12 @@ def interactive_mode(lang='zh'):
                         json.dump(cfg, f, indent=2, ensure_ascii=False)
                         f.truncate()
                     print(s['url_updated'])
+                    # 重启守护进程以加载新配置
+                    if check_status(silent=True):
+                        print(s.get('config_restart', "🔄 Restarting service..."))
+                        stop_daemon()
+                        time.sleep(1)
+                        start_daemon()
                 except Exception as e:
                     print(f"❌ Error: {e}")
                 continue
@@ -402,6 +412,10 @@ def configure_mode(lang='zh'):
                 cfg = json.load(f)
         except: pass
 
+    # 记录原始配置用于对比
+    import copy
+    old_cfg = copy.deepcopy(cfg)
+
     def get_input(prompt, key, default=''):
         val = input(f"{prompt} [{cfg.get(key, default)}]: ").strip()
         return val if val else cfg.get(key, default)
@@ -420,6 +434,15 @@ def configure_mode(lang='zh'):
             json.dump(cfg, f, indent=2, ensure_ascii=False)
         
         print(s['config_done'])
+
+        # 检查是否有变更，如果有且服务正在运行，则重启
+        if old_cfg != cfg:
+            if check_status(silent=True):
+                print(s.get('config_restart', "🔄 检测到配置变更，正在重启服务..."))
+                stop_daemon()
+                time.sleep(1)
+                start_daemon()
+
     except KeyboardInterrupt:
         print("\n❌ 配置已取消。")
     except Exception as e:
