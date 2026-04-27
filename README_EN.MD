@@ -24,7 +24,7 @@ After installing this plugin, ensure that the `skills/vehicle_aps/config.json` f
 
 - `url`: <https://vehicle_aps.cert.cfapps.ap21.hana.ondemand.com>
 - `apiKey`: b9d6cf10c2a9642d66168780198b3ae00719908982bcfe47ebcc383db1f112ac
-- `verify_ssl`: true,
+- `verify_ssl`: false,
 - `language`: zh
 
 ## Installation Steps
